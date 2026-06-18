@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>白鹿鸣 - 出院后身体状况与照护时间表</title>
+  <style>
+    :root {
+      --ink: #253746;
+      --muted: #627585;
+      --blue: #315f78;
+      --blue-soft: #eaf4f7;
+      --green-soft: #edf7f1;
+      --yellow-soft: #fff7dd;
+      --red: #a9463f;
+      --red-soft: #fff0ed;
+      --line: #d8e3e8;
+      --paper: #fffefa;
+      --page: #f3f6f5;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--page);
+      font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.72;
+    }
+    .page { max-width: 1120px; margin: 0 auto; padding: 30px 24px 56px; }
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 38px 40px;
+      color: #fff;
+      background: linear-gradient(135deg, #315f78, #507f8c);
+      border-radius: 24px;
+      box-shadow: 0 14px 40px rgba(31, 64, 78, .14);
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -70px;
+      top: -90px;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.08);
+    }
+    h1 { position: relative; margin: 0 0 10px; font-size: 30px; line-height: 1.3; letter-spacing: .02em; }
+    .subtitle { position: relative; margin: 0; color: rgba(255,255,255,.86); }
+    .facts { position: relative; display: flex; flex-wrap: wrap; gap: 10px 24px; margin-top: 22px; font-size: 14px; }
+    .facts span { padding: 5px 11px; background: rgba(255,255,255,.12); border-radius: 999px; }
+    .actions { display: flex; gap: 10px; margin: 16px 0 0; }
+    button, .button {
+      appearance: none;
+      border: 1px solid #bfd0d8;
+      border-radius: 10px;
+      padding: 9px 14px;
+      color: var(--blue);
+      background: #fff;
+      font: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    nav, section {
+      margin-top: 22px;
+      padding: 26px 28px;
+      background: var(--paper);
+      border: 1px solid #e4ebe9;
+      border-radius: 18px;
+      box-shadow: 0 7px 22px rgba(42, 69, 75, .055);
+    }
+    nav { padding: 18px 24px; }
+    nav strong { margin-right: 15px; color: var(--blue); }
+    nav a { display: inline-block; margin: 4px 14px 4px 0; color: #3f6d81; text-decoration: none; }
+    h2 { margin: 0 0 18px; color: var(--blue); font-size: 23px; line-height: 1.4; }
+    h3 { margin: 24px 0 12px; color: #385c6d; font-size: 18px; }
+    .section-kicker { margin: -10px 0 18px; color: var(--muted); font-size: 14px; }
+    .priority-grid, .daily-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+    .priority, .daily-item {
+      padding: 15px;
+      background: var(--blue-soft);
+      border: 1px solid #d5e8ed;
+      border-radius: 13px;
+    }
+    .priority strong { display: block; margin-bottom: 5px; color: var(--blue); }
+    .priority:nth-child(2), .priority:nth-child(4) { background: var(--yellow-soft); border-color: #f0e2ac; }
+    .priority:nth-child(3) { background: var(--green-soft); border-color: #d7eadd; }
+    .priority:nth-child(5) { background: var(--red-soft); border-color: #efd1ca; }
+    .note { padding: 13px 16px; background: var(--yellow-soft); border-left: 4px solid #d3a83d; border-radius: 8px; }
+    .status-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 16px 0 20px; }
+    .status-strip div { padding: 12px; background: #f7faf9; border: 1px solid var(--line); border-radius: 10px; }
+    .status-strip b { display: block; color: var(--blue); font-size: 17px; }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 14px; }
+    th, td { padding: 12px 13px; vertical-align: top; text-align: left; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    th:first-child, td:first-child { border-left: 1px solid var(--line); }
+    thead th { color: #fff; background: var(--blue); border-color: #52798b; }
+    thead th:first-child { border-top-left-radius: 10px; }
+    thead th:last-child { border-top-right-radius: 10px; }
+    tbody tr:nth-child(even) td { background: #f8fbfa; }
+    td strong { color: #315b70; }
+    .condition-table th:nth-child(1) { width: 16%; }
+    .condition-table th:nth-child(2) { width: 27%; }
+    .condition-table th:nth-child(3) { width: 23%; }
+    .condition-table th:nth-child(4) { width: 34%; }
+    .timeline-table th:nth-child(1) { width: 17%; }
+    .timeline-table th:nth-child(2) { width: 20%; }
+    .timeline-table th:nth-child(3) { width: 43%; }
+    .timeline-table th:nth-child(4) { width: 20%; }
+    .tag { display: inline-block; margin: 0 5px 3px 0; padding: 2px 7px; border-radius: 999px; color: #315f78; background: #dceef3; font-size: 12px; font-weight: 700; white-space: nowrap; }
+    .tag.review { color: #356245; background: #ddf0e3; }
+    .tag.warn { color: #8a4e23; background: #f9e7c8; }
+    .tag.med { color: #694f85; background: #ece3f5; }
+    .tag.vax { color: #8b4742; background: #f5dfdc; }
+    .task-date { color: var(--blue); font-weight: 800; white-space: nowrap; }
+    .daily-grid { grid-template-columns: repeat(3, 1fr); }
+    .daily-item { position: relative; padding-left: 40px; background: #f7fbfb; }
+    .daily-item::before { content: "✓"; position: absolute; left: 15px; top: 14px; color: #3f8062; font-weight: 900; }
+    .urgent { border: 1px solid #e9b9b1; background: var(--red-soft); }
+    .urgent h2 { color: var(--red); }
+    .urgent ul { columns: 2; margin-bottom: 0; }
+    .urgent strong { color: #8f3934; }
+    .sources { color: var(--muted); font-size: 13px; }
+    footer { padding: 28px 8px 0; color: var(--muted); font-size: 13px; text-align: center; }
+    .avoid-break { break-inside: avoid; page-break-inside: avoid; }
+    @media (max-width: 860px) {
+      .priority-grid { grid-template-columns: repeat(2, 1fr); }
+      .status-strip { grid-template-columns: repeat(2, 1fr); }
+      .daily-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 620px) {
+      body { font-size: 15px; }
+      .page { padding: 14px 10px 38px; }
+      .hero { padding: 28px 20px; border-radius: 16px; }
+      h1 { font-size: 25px; }
+      nav, section { padding: 20px 16px; border-radius: 14px; }
+      .priority-grid, .daily-grid, .status-strip { grid-template-columns: 1fr; }
+      .actions { flex-wrap: wrap; }
+      .table-wrap { overflow: visible; }
+      table, thead, tbody, tr, th, td { display: block; width: 100% !important; }
+      thead { position: absolute; width: 1px !important; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+      tbody tr { margin-bottom: 14px; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+      td, td:first-child { position: relative; padding: 10px 11px 10px 38%; border: 0; border-bottom: 1px solid var(--line); background: #fff !important; }
+      td:last-child { border-bottom: 0; }
+      td::before { content: attr(data-label); position: absolute; left: 11px; top: 10px; width: 33%; color: var(--blue); font-weight: 700; }
+      .urgent ul { columns: 1; }
+    }
+    @page { size: A4; margin: 14mm 12mm 16mm; }
+    @media print {
+      html, body { background: #fff; }
+      body { font-size: 10.4pt; line-height: 1.53; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .page { max-width: none; padding: 0; }
+      .hero { padding: 20px 24px; border-radius: 14px; box-shadow: none; }
+      h1 { font-size: 22pt; }
+      h2 { font-size: 16pt; break-after: avoid; page-break-after: avoid; }
+      h3 { font-size: 13pt; break-after: avoid; page-break-after: avoid; }
+      .actions { display: none !important; }
+      nav, section { margin-top: 12px; padding: 17px 18px; border-radius: 10px; box-shadow: none; }
+      nav { display: none; }
+      .priority-grid { grid-template-columns: repeat(5, 1fr); gap: 7px; }
+      .priority { padding: 9px; font-size: 8.7pt; }
+      .status-strip { grid-template-columns: repeat(4, 1fr); }
+      .daily-grid { grid-template-columns: repeat(3, 1fr); gap: 7px; }
+      .daily-item { padding: 8px 8px 8px 27px; font-size: 9pt; }
+      .daily-item::before { left: 9px; top: 7px; }
+      table { font-size: 8.5pt; line-height: 1.42; }
+      th, td { padding: 7px 8px; }
+      tr { break-inside: avoid; page-break-inside: avoid; }
+      .tag { font-size: 7.3pt; }
+      .urgent { break-inside: avoid; page-break-inside: avoid; }
+      a { color: inherit; text-decoration: none; }
+      footer { padding-top: 14px; }
+    }
+  </style>
+</head>
+<body id="top">
+  <main class="page">
+    <header class="hero">
+      <h1>白鹿鸣出院后身体状况与照护时间表</h1>
+      <p class="subtitle">根据诊断证明、出院记录、医生出院交代录音及新生儿出院指导整理</p>
+      <div class="facts">
+        <span>男宝</span><span>出生：2026-06-13</span><span>出院：2026-06-18</span><span>整理：2026-06-19</span><span>医院：昆明安琪儿妇产医院</span>
+      </div>
+    </header>
+    <div class="actions" aria-label="页面操作">
+      <button type="button" onclick="window.print()">打印 / 保存为 PDF</button>
+      <a class="button" href="#top">返回顶部</a>
+    </div>
+
+    <nav aria-label="目录">
+      <strong>快速查看</strong>
+      <a href="#summary">优先关注</a><a href="#conditions">身体状况</a><a href="#timeline">后续时间表</a><a href="#daily">每日清单</a><a href="#urgent">立即就医</a>
+    </nav>
+
+    <section id="summary">
+      <h2>一页摘要：最需要优先关注的 5 件事</h2>
+      <div class="priority-grid">
+        <div class="priority"><strong>1. 每天测黄疸</strong>6月19日首次复查；日龄4-10天为重点观察期，升高时按医嘱处理。</div>
+        <div class="priority"><strong>2. 一周复查双肾</strong>约6月25日复查双肾超声；发热、尿少、尿频或尿色深应及时就诊。</div>
+        <div class="priority"><strong>3. 一周复查贫血</strong>查血常规、网织红细胞和血清铁蛋白；不要自行补铁。</div>
+        <div class="priority"><strong>4. 完成筛查</strong>尽快补做自动听性脑干反应；日龄28-30天做眼底筛查。</div>
+        <div class="priority"><strong>5. 满月安排</strong>儿保体检、心脏彩超、髋关节B超；体检无异常后补种卡介苗。</div>
+      </div>
+      <p class="note"><strong>出院时总体情况：</strong>病情好转出院，体温36.8℃、呼吸45次/分、心率130次/分、体重3300克、氧饱和度96%；吃奶50 ml/次，8-9次/日。</p>
+    </section>
+
+    <section id="conditions">
+      <h2>第一部分：当前身体状况整理</h2>
+      <p class="section-kicker">以下是已有医疗资料的家庭照护版整理，不是新的诊断。涉及治疗或是否需要进一步检查，均以复诊医生判断为准。</p>
+      <div class="status-strip avoid-break">
+        <div><b>7项</b>正式出院诊断</div><div><b>12.7 / 12.5 / 11.9</b>出院经皮胆红素 mg/dL</div><div><b>1.0 / 0.5 cm</b>左 / 右肾盂分离</div><div><b>118 g/L</b>6月17日血红蛋白</div>
+      </div>
+      <div class="table-wrap">
+        <table class="condition-table">
+          <thead><tr><th>身体状况</th><th>具体是什么 / 目前状态</th><th>可能后果 / 为何关注</th><th>需要注意什么 / 需要做什么</th></tr></thead>
+          <tbody>
+            <tr><td data-label="身体状况"><strong>新生儿肺炎 / 呼吸困难</strong></td><td data-label="目前状态">胸片提示新生儿肺炎；住院时曾有呻吟、气促并需头罩吸氧，接受抗感染等治疗。出院时双肺呼吸音清，呼吸45次/分、氧饱和度96%，病情好转。</td><td data-label="为何关注">呼吸或感染症状可能再次出现，需要观察整体状态。</td><td data-label="照护与复查">每天观察呼吸是否平稳、口唇颜色、吃奶和精神反应；注意保暖、预防感染。若呼吸急促或费力、口唇发青、发热、奶量明显下降，及时就诊。不适随诊。</td></tr>
+            <tr><td data-label="身体状况"><strong>新生儿酸碱平衡紊乱</strong></td><td data-label="目前状态">出生脐动脉血气异常；医生录音说明经扩容、补液等治疗后已纠正。</td><td data-label="为何关注">该项与出生早期呼吸、循环状态有关；目前重点是观察整体恢复情况。</td><td data-label="照护与复查">家中观察呼吸、精神、吃奶及体温。若状态明显变差，及时就诊；是否需复查血气或相关化验由复诊医生判断。</td></tr>
+            <tr><td data-label="身体状况"><strong>新生儿黄疸</strong></td><td data-label="目前状态">住院期间接受蓝光治疗。出院记录为中度黄疸，经皮胆红素12.7、12.5、11.9 mg/dL；医生录音提到当天最高12.7 mg/dL。</td><td data-label="为何关注">医生提示日龄4-10天是黄疸上升高峰，出院后仍可能升高。</td><td data-label="照护与复查"><strong>每天测黄疸</strong>，6月19日做出院后首次复查；6月19-23日重点观察。若颜色明显加深、精神差或吃奶下降，及时就诊；是否需要蓝光或肝功能检查按医生医嘱。</td></tr>
+            <tr><td data-label="身体状况"><strong>轻度肾积水 / 双肾肾盂分离</strong></td><td data-label="目前状态">超声示左肾盂分离约1.0 cm、右肾盂分离约0.5 cm，考虑左肾轻度积水、右肾少量积水。住院时尿色清，未见少尿、明显尿频或尿道口红肿。</td><td data-label="为何关注">需通过复查观察分离值减少、稳定或增大，并留意泌尿系统异常表现。</td><td data-label="照护与复查">每天观察尿量、尿色、尿频、少尿和发热。约6月25日复查双肾超声；若数值增大或有异常，由泌尿外科/专科评估。发热、尿少、尿频或尿色像浓茶时及时就诊。</td></tr>
+            <tr><td data-label="身体状况"><strong>新生儿贫血</strong></td><td data-label="目前状态">6月17日血红蛋白118 g/L，列入出院诊断。医生录音提到当时心率、呼吸和氧饱和度稳定，暂不自行处理。</td><td data-label="为何关注">需结合血红蛋白变化、网织红细胞及铁储备判断是否需要治疗。</td><td data-label="照护与复查">约6月25日复查血常规、网织红细胞、血清铁蛋白。<strong>不要自行补铁</strong>，由医生根据结果决定是否加铁剂。观察面色、吃奶、精神与呼吸，异常及时就诊。</td></tr>
+            <tr><td data-label="身体状况"><strong>听力筛查未完全完成</strong></td><td data-label="目前状态">耳声发射双耳通过；自动听性脑干反应因检查环境要求未在住院期完成。</td><td data-label="为何关注">两项检查作用不同，仍需补齐自动听性脑干反应。</td><td data-label="照护与复查">按医生交代，出院后尽快带检查单至儿保/耳保科完成；医生录音建议出院当天办理。后续按儿保或听力专科意见随访。</td></tr>
+            <tr><td data-label="身体状况"><strong>产瘤 / 头部包块</strong></td><td data-label="目前状态">入院时头顶触及约5×5 cm包块，无明显波动感，跨骨缝；正式出院诊断含“新生儿产瘤”。6月14日颅脑超声未见明显异常声像。</td><td data-label="为何关注">需要随访头围和包块变化，结合生长发育情况判断。</td><td data-label="照护与复查">后续每次儿保监测头围、身长、体重；必要时由医生决定是否动态复查颅脑超声。若包块变化明显或宝宝状态异常，及时就诊。</td></tr>
+            <tr><td data-label="身体状况"><strong>心脏彩超、髋关节B超待完善</strong></td><td data-label="目前状态">出院医嘱建议满月完成两项筛查，目前资料未记录完成结果。</td><td data-label="为何关注">属于医生安排的满月阶段检查，用于完善筛查资料。</td><td data-label="照护与复查">约7月13日安排心脏彩超及髋关节B超；结果由儿保或相关专科医生解读。</td></tr>
+            <tr><td data-label="身体状况"><strong>眼底筛查待完成</strong></td><td data-label="目前状态">住院期间曾接受头罩吸氧；出院医嘱建议日龄28-30天至儿童眼科做新生儿眼底筛查。</td><td data-label="为何关注">这是基于住院吸氧史作出的筛查安排。</td><td data-label="照护与复查">在2026-07-11至2026-07-13预约儿童眼科完成，后续按眼科意见处理。</td></tr>
+            <tr><td data-label="身体状况"><strong>卡介苗未接种</strong></td><td data-label="目前状态">因出生后住院，卡介苗尚未接种。</td><td data-label="为何关注">需在满月儿保评估后补种，避免遗漏疫苗计划。</td><td data-label="照护与复查">约7月14日做满月儿保体检；若无异常，按医院接种时间返回产科补种。出院记录载明周二、周四14:00-16:00，前往前宜与医院确认。</td></tr>
+            <tr><td data-label="身体状况"><strong>新生儿疾病筛查待查询</strong></td><td data-label="目前状态">足跟血已采，筛查卡已交家属；结果尚待查询。</td><td data-label="为何关注">需要主动查询并妥善保存凭证，避免漏看结果。</td><td data-label="照护与复查">保管并拍照备份筛查卡；约满月（7月13日左右）按卡片网站查询。若医院通知异常，按通知尽快复诊。</td></tr>
+            <tr><td data-label="身体状况"><strong>日常护理：喂养、脐带、皮肤、环境</strong></td><td data-label="目前状态">出院吃奶50 ml/次、8-9次/日；脐带通常7-14天自然脱落。通用指导建议室温22-26℃、湿度55%-65%，每天通风至少2次、每次半小时。</td><td data-label="为何关注">合理喂养、清洁和适宜环境有助于减少呛奶、皮肤及脐部问题和感染。</td><td data-label="照护与复查">按需合理喂养，喂后拍嗝并防呛；奶具专用并消毒。每天清洁脐部、勤换尿裤并观察皮肤。脐部红肿、渗血、有臭味，或15天仍未脱落时及时就诊。</td></tr>
+            <tr><td data-label="身体状况"><strong>双侧乳头旁小肉赘</strong></td><td data-label="目前状态">双侧乳头旁各见芝麻大小肉赘；医生录音提到右侧已发黑结痂、可能脱落，左侧仍为肉色、可能缓慢变化。</td><td data-label="为何关注">目前资料未提示需要立即处理，但需避免摩擦并观察局部变化。</td><td data-label="照护与复查">保持清洁干燥，不拉扯、不自行剪除或涂药。若红肿、破溃、渗液或明显变大，及时就诊；常规儿保时请医生查看。</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="timeline">
+      <h2>第二部分：后续照护时间表</h2>
+      <p class="section-kicker">同一天的任务已拆分列出。日期为依据出生、出院日期推算的计划点，具体预约与处理以医院、儿保或专科医嘱为准。</p>
+      <div class="table-wrap">
+        <table class="timeline-table">
+          <thead><tr><th>日期 / 时间段</th><th>任务名称</th><th>具体要做什么</th><th>资料依据</th></tr></thead>
+          <tbody>
+            <tr><td data-label="日期"><span class="task-date">每天</span></td><td data-label="任务"><span class="tag">每日</span>测黄疸</td><td data-label="具体事项">每日测黄疸并记录数值、测量地点和皮肤颜色变化；升高时按医生医嘱复查或处理。</td><td data-label="依据">出院记录、医生录音</td></tr>
+            <tr><td data-label="日期"><span class="task-date">每天</span></td><td data-label="任务"><span class="tag">每日</span>观察整体状态</td><td data-label="具体事项">观察体温、吃奶量、精神反应、呼吸是否平稳及口唇颜色。</td><td data-label="依据">出院记录、医生录音</td></tr>
+            <tr><td data-label="日期"><span class="task-date">每天</span></td><td data-label="任务"><span class="tag">每日</span>观察排尿</td><td data-label="具体事项">记录尿量、尿色，留意尿频、少尿、尿色变深及发热。</td><td data-label="依据">出院记录、医生录音</td></tr>
+            <tr><td data-label="日期"><span class="task-date">每天</span></td><td data-label="任务"><span class="tag">每日</span>护理脐部和皮肤</td><td data-label="具体事项">清洁脐部，勤换尿裤，保持皮肤和臀部清洁干燥；检查肉赘有无红肿、破溃或渗液。</td><td data-label="依据">新生儿出院指导、出院记录</td></tr>
+            <tr><td data-label="日期"><span class="task-date">每天</span></td><td data-label="任务"><span class="tag med">用药</span>维生素AD</td><td data-label="具体事项">每日1次，每次1粒，按出院医嘱服用；医嘱建议至少服至3岁，长期方案由儿保确认。</td><td data-label="依据">出院记录</td></tr>
+            <tr><td data-label="日期"><span class="task-date">每天</span></td><td data-label="任务"><span class="tag">每日</span>合理喂养</td><td data-label="具体事项">参考出院奶量50 ml/次、8-9次/日并结合宝宝需求；喂后拍嗝，注意防呛奶，奶具专用并消毒。</td><td data-label="依据">出院记录、医生录音、新生儿出院指导</td></tr>
+            <tr><td data-label="日期"><span class="task-date">每天</span></td><td data-label="任务"><span class="tag">每日</span>环境与保暖</td><td data-label="具体事项">注意保暖、预防感染；室温22-26℃、湿度55%-65%，每天至少通风2次、每次半小时。</td><td data-label="依据">出院记录、新生儿出院指导</td></tr>
+
+            <tr><td data-label="日期"><span class="task-date">2026-06-18<br>出院当天</span></td><td data-label="任务">整理出院资料</td><td data-label="具体事项">核对并集中保管诊断证明、出院记录、化验检查结果和胸片等资料。</td><td data-label="依据">医生录音</td></tr>
+            <tr><td data-label="日期"><span class="task-date">2026-06-18<br>出院当天</span></td><td data-label="任务">办理盖章</td><td data-label="具体事项">按交代到一楼收银处为家属留存的出院记录办理盖章。</td><td data-label="依据">医生录音</td></tr>
+            <tr><td data-label="日期"><span class="task-date">2026-06-18<br>出院当天</span></td><td data-label="任务">保管筛查卡</td><td data-label="具体事项">妥善保存足跟血疾病筛查卡，并拍照留档，供一个月后查询结果。</td><td data-label="依据">医生录音</td></tr>
+            <tr><td data-label="日期"><span class="task-date">2026-06-18起<br>尽快</span></td><td data-label="任务"><span class="tag review">复查</span>补做听力检查</td><td data-label="具体事项">携检查单到儿保/耳保科完善自动听性脑干反应；耳声发射已双耳通过。</td><td data-label="依据">出院记录、医生录音</td></tr>
+
+            <tr><td data-label="日期"><span class="task-date">2026-06-19</span></td><td data-label="任务"><span class="tag review">复查</span>首次黄疸复查</td><td data-label="具体事项">到家附近社区或医院测黄疸并记录；结果升高时按医生意见处理。</td><td data-label="依据">医生录音、出院记录</td></tr>
+            <tr><td data-label="日期"><span class="task-date">2026-06-19<br>至 06-23</span></td><td data-label="任务"><span class="tag warn">重点观察</span>黄疸</td><td data-label="具体事项">日龄4-10天黄疸可能上升较快；每天监测颜色、数值、吃奶和精神状态。</td><td data-label="依据">医生录音</td></tr>
+            <tr><td data-label="日期"><span class="task-date">2026-06-20<br>左右</span></td><td data-label="任务"><span class="tag med">用药</span>开始维生素K1</td><td data-label="具体事项">出生满一周后开始：每次1 mg（1粒），每周一次，连续3个月。口服滴剂或外院肌注方式按医嘱执行。</td><td data-label="依据">出院记录、医生录音</td></tr>
+            <tr><td data-label="日期"><span class="task-date">2026-06-20<br>至 06-27</span></td><td data-label="任务">观察脐带脱落</td><td data-label="具体事项">脐带通常出生后7-14天自然脱落；每天清洁。红肿、渗血、有臭味或出生15天仍未脱落，及时就诊。</td><td data-label="依据">新生儿出院指导</td></tr>
+
+            <tr><td data-label="日期"><span class="task-date">2026-06-25<br>左右</span></td><td data-label="任务"><span class="tag review">复查</span>双肾超声</td><td data-label="具体事项">出院后一周复查，比较左1.0 cm、右0.5 cm肾盂分离的变化。</td><td data-label="依据">出院记录、医生录音</td></tr>
+            <tr><td data-label="日期"><span class="task-date">2026-06-25<br>左右</span></td><td data-label="任务"><span class="tag review">复查</span>血常规</td><td data-label="具体事项">复查血红蛋白及其他血细胞指标，和6月17日血红蛋白118 g/L对照。</td><td data-label="依据">出院记录、医生录音</td></tr>
+            <tr><td data-label="日期"><span class="task-date">2026-06-25<br>左右</span></td><td data-label="任务"><span class="tag review">复查</span>网织红细胞</td><td data-label="具体事项">与血常规一并检查，供医生评估贫血变化。</td><td data-label="依据">出院记录</td></tr>
+            <tr><td data-label="日期"><span class="task-date">2026-06-25<br>左右</span></td><td data-label="任务"><span class="tag review">复查</span>血清铁蛋白</td><td data-label="具体事项">检查铁储备；根据结果由医生决定是否加铁剂，家属不要自行补铁。</td><td data-label="依据">出院记录、医生录音</td></tr>
+            <tr><td data-label="日期"><span class="task-date">复查结果后</span></td><td data-label="任务">肾脏专科评估</td><td data-label="具体事项">若双肾超声数值增大或出现异常表现，由泌尿外科/相关专科评估；若减小或稳定，按专科意见动态复查。</td><td data-label="依据">医生录音、出院记录</td></tr>
+
+            <tr><td data-label="日期"><span class="task-date">2026-07-11<br>至 07-13</span></td><td data-label="任务"><span class="tag review">筛查</span>新生儿眼底</td><td data-label="具体事项">日龄28-30天到儿童眼科完成眼底筛查。</td><td data-label="依据">出院记录、医生录音</td></tr>
+            <tr><td data-label="日期"><span class="task-date">2026-07-13<br>左右</span></td><td data-label="任务">查询疾病筛查结果</td><td data-label="具体事项">用妥善保存的足跟血筛查卡登录指定网站查询；有异常通知时按要求就诊。</td><td data-label="依据">医生录音、出院记录</td></tr>
+            <tr><td data-label="日期"><span class="task-date">2026-07-13<br>左右</span></td><td data-label="任务"><span class="tag review">满月</span>心脏彩超</td><td data-label="具体事项">按出院医嘱完善心脏彩超，并请医生解读结果。</td><td data-label="依据">出院记录、医生录音</td></tr>
+            <tr><td data-label="日期"><span class="task-date">2026-07-13<br>左右</span></td><td data-label="任务"><span class="tag review">满月</span>髋关节B超</td><td data-label="具体事项">按出院医嘱完善髋关节B超，并请医生解读结果。</td><td data-label="依据">出院记录、医生录音</td></tr>
+            <tr><td data-label="日期"><span class="task-date">2026-07-14<br>左右</span></td><td data-label="任务"><span class="tag review">儿保</span>满月体检</td><td data-label="具体事项">到儿保科体检，测量身长、体重、头围，建立或完善儿童保健随访。</td><td data-label="依据">出院记录、医生录音</td></tr>
+            <tr><td data-label="日期"><span class="task-date">体检无异常后</span></td><td data-label="任务"><span class="tag vax">疫苗</span>补种卡介苗</td><td data-label="具体事项">返回产科补种；记录载明周二、周四14:00-16:00，具体日期提前向医院确认。</td><td data-label="依据">出院记录、新生儿出院指导</td></tr>
+
+            <tr><td data-label="日期"><span class="task-date">后续每周</span></td><td data-label="任务"><span class="tag med">用药</span>维生素K1</td><td data-label="具体事项">计划日期：6/20、6/27、7/4、7/11、7/18、7/25、8/1、8/8、8/15、8/22、8/29、9/5、9/12左右。每次1 mg（1粒），连续3个月；最终停止时间按医生或儿保确认。</td><td data-label="依据">出院记录、医生录音</td></tr>
+            <tr><td data-label="日期"><span class="task-date">后续每次儿保</span></td><td data-label="任务">生长发育监测</td><td data-label="具体事项">监测头围、身长、体重；必要时由医生决定是否动态复查颅脑超声。</td><td data-label="依据">出院记录、医生录音</td></tr>
+            <tr><td data-label="日期"><span class="task-date">按疫苗本</span></td><td data-label="任务"><span class="tag vax">疫苗</span>预防接种</td><td data-label="具体事项">定期儿保并按照疫苗本安排接种；具体时间由接种门诊确认。</td><td data-label="依据">出院记录、新生儿出院指导</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="daily">
+      <h2>家里每天检查什么</h2>
+      <div class="daily-grid">
+        <div class="daily-item">黄疸颜色有没有加深</div><div class="daily-item">体温是否正常，有无发热</div><div class="daily-item">呼吸是否平稳</div>
+        <div class="daily-item">奶量是否明显下降</div><div class="daily-item">精神反应是否变差</div><div class="daily-item">尿量是否减少</div>
+        <div class="daily-item">尿色是否变深、是否尿频</div><div class="daily-item">脐部是否红肿、渗血、有臭味</div><div class="daily-item">皮肤有无皮疹、脓点、红斑</div>
+        <div class="daily-item">大便是否明显异常</div><div class="daily-item">乳头旁肉赘是否红肿、破溃、渗液</div><div class="daily-item">记录维生素AD及每周K1是否已服</div>
+      </div>
+      <p class="sources">建议每天固定时间简要记录“黄疸数值 / 体温 / 奶量 / 尿便 / 用药 / 异常表现”，复诊时带给医生查看。</p>
+    </section>
+
+    <section id="urgent" class="urgent">
+      <h2>需要立即或及时就医的情况</h2>
+      <p><strong>出现以下任一情况，不等待下一次预约，及时联系医院或就诊：</strong></p>
+      <ul>
+        <li>发热</li><li>呼吸急促或费力</li><li>口唇发青</li><li>精神反应明显差</li><li>奶量明显下降</li>
+        <li>黄疸明显加深</li><li>尿少、尿频或尿色像浓茶</li><li>脐部红肿、渗血或有臭味</li><li>抽搐、异常哭闹或嗜睡</li><li>家属觉得状态明显不对</li>
+      </ul>
+    </section>
+
+    <section class="avoid-break">
+      <h2>资料说明</h2>
+      <p>本文件依据《新生儿出院指导》、正式诊断证明及出院记录，以及2026年6月18日医生出院交代录音转写整理。页面使用宝宝姓名“白鹿鸣”，已省略家庭住址、住院号、门诊号、床号和家属签名等隐私信息。</p>
+      <p class="note">本文件用于家属照护和复查提醒，不替代医生诊疗意见。医疗判断、用药调整、检查解读及疫苗接种条件，以儿保、专科或接种医生的当面意见为准。</p>
+    </section>
+
+    <footer>白鹿鸣家庭照护说明书 · 整理日期 2026-06-19</footer>
+  </main>
+</body>
+</html>
